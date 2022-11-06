@@ -1,0 +1,16 @@
+{
+  "name": "session-01",
+  "version": "1.0.0",
+  "description": "",
+  "main": "observable.js",
+  "dependencies": {
+    "rxjs": "^7.5.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
