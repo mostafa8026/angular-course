@@ -1,4 +1,5 @@
 import { runFP } from './fp';
+import { runImmutableArray, runImmutableObject } from './immutable';
 import './style/style.scss'
 console.log('session-04-class');
 
@@ -15,4 +16,7 @@ console.log('session-04-class');
 // });
 
 
-runFP();
+//runFP();
+
+runImmutableObject();
+//runImmutableArray();
