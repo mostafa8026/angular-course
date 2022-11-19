@@ -1,22 +1,22 @@
-import { runFP } from './fp';
-import { runImmutableArray, runImmutableObject } from './immutable';
-import './style/style.scss'
-console.log('session-04-class');
+import { orderAdded } from './actions/actions';
+import {store, actions} from './store';
 
-/**
- * It's better to use observable side of the subject inside other components. 
- */ 
+console.log(store.getState());
 
-// import {observable} from './subject'
+console.log(actions);
+actions.orderAdded(1);
+actions.kindAdded("kind 1");
 
-// observable.subscribe({
-//     next: (data) => {
-//         console.log('inside other component: ', data);
-//     }
-// });
+const unsubscribe = store.subscribe(() => {
+    console.log('New Event ',store.getState(), store.getState());
+})
 
+actions.orderAdded(2);
+actions.kindAdded("kind 2");
 
-//runFP();
+actions.orderAdded(3);
+actions.kindAdded("kind 3");
+//store.dispatch(orderAdded(3));
 
-runImmutableObject();
-//runImmutableArray();
+// To prevent memory leak
+unsubscribe();
