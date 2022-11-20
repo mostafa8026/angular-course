@@ -21,6 +21,8 @@ const reducer = combineReducers({
 });
 
 const logger = createLogger();
+// for redux-thunk middleware you can take a look here: 
+// https://github.com/mostafa8026/train-projects-observables/tree/main/session4-redux-thunk
 const store = createStore(reducer, applyMiddleware(logger));
 
 const actions = bindActionCreators({ orderAdded, kindAdded }, store.dispatch);
