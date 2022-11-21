@@ -1,8 +1,7 @@
-import { runFP } from './fp';
-import { runRedux } from './redux';
-import './style/style.scss'
-console.log('session-04');
+import { orderFeature } from "./app/features/order/order-slicer";
+import { store } from "./app/store";
 
-//runFP();
-
-runRedux();
+store.subscribe(()=>{
+    console.log(store.getState())
+})
+store.dispatch(orderFeature.orderActions.orderAdded(1));
