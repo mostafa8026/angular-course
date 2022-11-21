@@ -1,6 +1,6 @@
 import produce from "immer";
 import { KindActionInterface, OrderActionInterface } from "../actions/actions";
-import { KIND_ADDED } from "../constants/action-types";
+import { KIND_ADDED } from "../actions/constants/action-types";
 import { KindInterface } from "../store";
 
 export const kindReducer = (state: KindInterface = {

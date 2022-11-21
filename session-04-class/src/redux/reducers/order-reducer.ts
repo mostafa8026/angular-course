@@ -1,6 +1,6 @@
 import produce from "immer";
 import { OrderActionInterface } from "../actions/actions";
-import { ORDER_ADDED } from "../constants/action-types";
+import { ORDER_ADDED } from "../actions/constants/action-types";
 import { OrderInterce, StoreInterce } from "../store";
 
 export const orderReducer = (state: OrderInterce = {
