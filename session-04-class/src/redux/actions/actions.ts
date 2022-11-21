@@ -1,4 +1,4 @@
-import { KIND_ADDED, ORDER_ADDED } from "../constants/action-types"
+import { KIND_ADDED, ORDER_ADDED } from "./constants/action-types"
 import {bindActionCreators} from 'redux'
 
 export interface OrderActionInterface {
