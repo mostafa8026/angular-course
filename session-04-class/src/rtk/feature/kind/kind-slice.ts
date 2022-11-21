@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, Store } from "@reduxjs/toolkit";
 import { orderFeature, OrderInterface, OrderItemInterface } from "../order/order-slice";
 
 export interface KindInterface {
@@ -12,12 +12,33 @@ export interface StoreItemInterface {
 }
 
 export interface StoreInterface {
+    loading?: boolean;
     kinds: StoreItemInterface[];
+    error?: string;
 }
 
 const initialState: StoreInterface = {
-    kinds: []
+    loading: false,
+    kinds: [],
+    error: ''
 }
+
+const initStore = createAsyncThunk('store/fetch', () => {
+    // todo: check why we can't return it directly
+    const promise = new Promise((resolve, rejct) => {
+        setTimeout(() => {
+            resolve(<StoreItemInterface[]>[{
+                kind: {
+                    id: 1,
+                    name: 'kind 1'
+                },
+                quantity: 50
+            }])
+        }, 5000);
+    });
+
+    return promise;
+})
 
 function removeFromStore(kinds: StoreItemInterface[], storeItem: StoreItemInterface) {
     const item = kinds.find(item => item.kind.id === item.kind.id);
@@ -60,7 +81,7 @@ const slice = createSlice({
         }) => {
             action.payload.items.map(orderItem => {
                 const kind = state.kinds.find(item => item.kind.id === orderItem.kindId);
-                if(!kind) {
+                if (!kind) {
                     throw new Error("Kind not found");
                 }
                 removeFromStore(state.kinds, {
@@ -68,11 +89,19 @@ const slice = createSlice({
                     quantity: orderItem.quantity
                 })
             })
-        }
-    )}
+        });
+        builder.addCase(initStore.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(initStore.fulfilled, (state, action) => {
+            state.loading = false;
+            state.kinds = action.payload as StoreItemInterface[];
+        });
+    }
 })
 
 export const kindFeature = {
     reducers: slice.reducer,
-    actions: slice.actions
+    actions: slice.actions,
+    initStore
 }

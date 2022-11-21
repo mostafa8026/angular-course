@@ -6,6 +6,8 @@ store.subscribe(()=>{
     console.log(store.getState());
 })
 
+store.dispatch(kindFeature.initStore());
+
 store.dispatch(kindFeature.actions.storeAdded({
     kind: {
         id: 1,
