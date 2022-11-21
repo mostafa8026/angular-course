@@ -1,5 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { orderFeature, OrderInterface, OrderItemInterface } from "../order/order-slice";
+import {createSlice} from "@reduxjs/toolkit";
+import {orderFeature, OrderInterface, OrderItemInterface} from "../order/order-slice";
+import {actions} from "../../../redux/store";
+import {ajax} from "rxjs/ajax";
 
 export interface KindInterface {
     id: number;
@@ -19,16 +21,16 @@ const initialState: StoreInterface = {
     kinds: []
 }
 
-function removeFromStore(kinds: StoreItemInterface[], storeItem: StoreItemInterface) {
-    const item = kinds.find(item => item.kind.id === item.kind.id);
-    if (storeItem) {
-        if (storeItem.quantity < storeItem.quantity) {
-            throw new Error("Quantity is higer than the item count");
+function removeFromStore(state: StoreInterface, action: { type: string, payload: StoreItemInterface }) {
+
+    state.kinds.map(kind => {
+        if (kind.kind.id === action.payload.kind.id) {
+            kind.quantity = kind.quantity - action.payload.quantity
+        } else {
+            throw Error
+            "not enough this kind in the store"
         }
-        storeItem.quantity -= storeItem.quantity;
-    } else {
-        throw new Error("We don't have this item")
-    }
+    })
 }
 
 const slice = createSlice({
@@ -50,26 +52,33 @@ const slice = createSlice({
             payload: StoreItemInterface,
             type: string
         }) => {
-            removeFromStore(state.kinds, action.payload);
+
+
+            removeFromStore(state, action)
+
         }
     },
     extraReducers: builder => {
         builder.addCase(orderFeature.actions.orderAdded, (state, action: {
-            payload: OrderInterface,
-            type: string
-        }) => {
-            action.payload.items.map(orderItem => {
-                const kind = state.kinds.find(item => item.kind.id === orderItem.kindId);
-                if(!kind) {
-                    throw new Error("Kind not found");
-                }
-                removeFromStore(state.kinds, {
-                    kind: kind?.kind,
-                    quantity: orderItem.quantity
-                })
-            })
-        }
-    )}
+                payload: OrderInterface,
+                type: string
+            }) => {
+                action.payload.items.map(item => {
+                        state.kinds.map(kind => {
+                            if (kind.kind.id == item.kindId) {
+
+                              kind.quantity = kind.quantity - item.quantity
+                            }
+                            else {
+                                throw Error('this kind is not enough in store')
+                            }
+
+                        })
+                    }
+                )
+            }
+        )
+    }
 })
 
 export const kindFeature = {
