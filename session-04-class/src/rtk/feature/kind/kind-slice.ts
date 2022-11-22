@@ -1,7 +1,5 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk, Store} from "@reduxjs/toolkit";
 import {orderFeature, OrderInterface, OrderItemInterface} from "../order/order-slice";
-import {actions} from "../../../redux/store";
-import {ajax} from "rxjs/ajax";
 
 export interface KindInterface {
     id: number;
@@ -14,12 +12,33 @@ export interface StoreItemInterface {
 }
 
 export interface StoreInterface {
+    loading?: boolean;
     kinds: StoreItemInterface[];
+    error?: string;
 }
 
 const initialState: StoreInterface = {
-    kinds: []
+    loading: false,
+    kinds: [],
+    error: ''
 }
+
+const initStore = createAsyncThunk('store/fetch', () => {
+    // todo: check why we can't return it directly
+    const promise = new Promise((resolve, rejct) => {
+        setTimeout(() => {
+            resolve(<StoreItemInterface[]>[{
+                kind: {
+                    id: 1,
+                    name: 'kind 1'
+                },
+                quantity: 50
+            }])
+        }, 5000);
+    });
+
+    return promise;
+})
 
 function removeFromStore(state: StoreInterface, action: { type: string, payload: StoreItemInterface }) {
 
@@ -67,9 +86,8 @@ const slice = createSlice({
                         state.kinds.map(kind => {
                             if (kind.kind.id == item.kindId) {
 
-                              kind.quantity = kind.quantity - item.quantity
-                            }
-                            else {
+                                kind.quantity = kind.quantity - item.quantity
+                            } else {
                                 throw Error('this kind is not enough in store')
                             }
 
@@ -77,11 +95,19 @@ const slice = createSlice({
                     }
                 )
             }
-        )
+        );
+        builder.addCase(initStore.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(initStore.fulfilled, (state, action) => {
+            state.loading = false;
+            state.kinds = action.payload as StoreItemInterface[];
+        });
     }
 })
 
 export const kindFeature = {
     reducers: slice.reducer,
-    actions: slice.actions
+    actions: slice.actions,
+    initStore
 }
