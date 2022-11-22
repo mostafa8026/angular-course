@@ -40,16 +40,32 @@ const initStore = createAsyncThunk('store/fetch', () => {
     return promise;
 })
 
-function removeFromStore(state: StoreInterface, action: { type: string, payload: StoreItemInterface }) {
+//this function has changed beacause should use in diffrent reducers
+function removeFromStore(state: StoreInterface, action: { type?: string, payload: any | StoreItemInterface | OrderInterface }) {
+    if (action.payload.items) {
+        action.payload.items.map((item: { kindId: number; quantity: number; }) => {
+                state.kinds.map(kind => {
+                    if (kind.kind.id == item.kindId) {
 
-    state.kinds.map(kind => {
-        if (kind.kind.id === action.payload.kind.id) {
-            kind.quantity = kind.quantity - action.payload.quantity
-        } else {
-            throw Error
-            "not enough this kind in the store"
-        }
-    })
+                        kind.quantity = kind.quantity - item.quantity
+                    } else {
+                        throw Error('this kind is not enough in store')
+                    }
+
+                })
+            }
+        )
+    }
+    if (action.payload.kind) {
+        state.kinds.map(kind => {
+            if (kind.kind.id === action.payload.kind.id) {
+                kind.quantity = kind.quantity - action.payload.quantity
+            } else {
+                throw Error
+                "not enough this kind in the store"
+            }
+        })
+    }
 }
 
 const slice = createSlice({
@@ -71,10 +87,7 @@ const slice = createSlice({
             payload: StoreItemInterface,
             type: string
         }) => {
-
-
             removeFromStore(state, action)
-
         }
     },
     extraReducers: builder => {
@@ -82,18 +95,8 @@ const slice = createSlice({
                 payload: OrderInterface,
                 type: string
             }) => {
-                action.payload.items.map(item => {
-                        state.kinds.map(kind => {
-                            if (kind.kind.id == item.kindId) {
-
-                                kind.quantity = kind.quantity - item.quantity
-                            } else {
-                                throw Error('this kind is not enough in store')
-                            }
-
-                        })
-                    }
-                )
+                //in this space used the function for remove the kinds in orderAdded action based on the reviewer commnets in the reviewing the pull request
+                removeFromStore(state, action)
             }
         );
         builder.addCase(initStore.pending, (state) => {
