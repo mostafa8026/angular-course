@@ -1,1 +1,3 @@
-console.log('Redux-observable');
+import { run } from "./redux-observable";
+
+run()
