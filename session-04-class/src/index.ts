@@ -3,7 +3,7 @@ import { kindFeature } from './rtk/feature/kind/kind-slice';
 import { orderFeature } from './rtk/feature/order/order-slice'
 
 store.subscribe(()=>{
-    console.log(store.getState());
+    // console.log(store.getState());
 })
 
 store.dispatch(kindFeature.initStore());
@@ -31,5 +31,3 @@ store.dispatch(orderFeature.actions.orderAdded({
     ],
     userId: 1
 }))
-
-console.log(store.getState())
