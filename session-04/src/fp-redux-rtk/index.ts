@@ -1,7 +1,7 @@
 import produce from "immer";
-import { orderFeature } from "./fp-redux-rtk/app/features/order/order-slicer";
-import { fetchUserInfo, userFeature } from "./fp-redux-rtk/app/features/user/user-slice";
-import { store } from "./fp-redux-rtk/app/store";
+import { orderFeature } from "./app/features/order/order-slicer";
+import { fetchUserInfo, userFeature } from "./app/features/user/user-slice";
+import { store } from "./app/store";
 import * as _ from 'lodash'
 
 const x = { a: { a: 1 } }
