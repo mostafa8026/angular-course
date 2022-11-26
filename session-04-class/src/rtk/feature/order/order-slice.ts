@@ -28,12 +28,12 @@ const slice = createSlice({
         orderAdded: (state, action: {
             payload: OrderInterface,
             type: string
-        }) =>{
+        }) => {
+
             state.orders.push(action.payload);
         }
     }
 })
-
 export const orderFeature = {
     reducers: slice.reducer,
     actions: slice.actions
