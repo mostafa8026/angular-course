@@ -1,44 +1,59 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+const path = require('path')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
-    mode: 'development',
-    entry: {
-        bundle: './src/index.js',
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name][contenthash].js',
-        clean: true,
-        assetModuleFilename: '[name][ext]'
-    },
-    module: {
-        rules: [
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader'
-                ]
-            },
-            {
-                test: /\.(png|gif|svg|jpg|jpeg|txt)$/i,
-                type: "asset/resource"
-            }
-        ]
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'My webpack app2',
-            filename: 'index.html',
-            template: './src/index.html'
-        })
-    ],
-    devServer: {
-        port: 4600,
-        open: true,
-        liveReload: true,
-        static: ['./src', './public'],
-    }
+  mode: 'production',
+  entry: {
+    bundle: './src/index.ts'
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js',
+    clean: true,
+    assetModuleFilename: '[name][ext]',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      },
+    ]
+  },
+  plugins: [
+    new HTMLWebpackPlugin({
+      title: 'the app by Observables',
+      filename: 'index.html',
+      template: './src/index.html'
+    })
+  ],
+  devServer: {
+    port: '4500',
+    open: true,
+    liveReload: true,
+    static: ['./src', './public']
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  }
 }
+// if (process.env.NODE_ENV !== 'production') {
+//     module.exports.plugins = (module.exports.plugins || []).concat([
+//         new HtmlWebpackPlugin({
+//             template: './src/index.html'
+//         })
+//     ])
+// }
