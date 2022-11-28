@@ -1,4 +1,4 @@
-import { concatMap, of, delay, mergeMap, tap } from 'rxjs';
+import { concatMap, of, delay, mergeMap, tap, fromEvent, switchMap, interval } from 'rxjs';
 
 export function runConcatMap() {
     console.log('run')
@@ -44,4 +44,20 @@ export function runMergeMap() {
                 console.log('the merge map is completed')
             }
         });
+}
+
+export function runSwitchMap() {
+    const clicks = fromEvent(document, 'click');
+    clicks.subscribe({
+        next() {
+            console.log('new clicked !')
+        }
+    })
+    const result = clicks.pipe(switchMap(() => interval(1000)));
+
+    result.subscribe({
+        next(val) {
+            console.log(val)
+        }
+    })
 }
