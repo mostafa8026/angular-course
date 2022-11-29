@@ -1,6 +1,6 @@
-import {inject, injectable} from 'inversify'
-import {ThrowableWeapon, Warrior, Weapon} from "./interfaces";
-import {Types} from "./types";
+import { inject, injectable } from 'inversify'
+import { ThrowableWeapon, Warrior, Weapon } from "./interfaces";
+import { Types } from "./types";
 
 @injectable()
 class Katana implements Weapon {
@@ -39,7 +39,7 @@ class Ninja implements Warrior {
 }
 
 @injectable()
-class Commando implements Warrior{
+class Commando implements Warrior {
     private _katana: Weapon;
     private _throwableWeapon: ThrowableWeapon;
     constructor(@inject(Types.Weapon) katana: Weapon, @inject(Types.ThrowableWeapon) throwableWeapon: ThrowableWeapon) {
@@ -48,13 +48,13 @@ class Commando implements Warrior{
     }
 
     fight(): string {
-        return "I'm a commando and fight with "+ this._katana.hit();
+        return "I'm a commando and fight with " + this._katana.hit();
     }
 
     sneak(): string {
-        return "I'm a commando and sneak with "+ this._throwableWeapon.throw();
+        return "I'm a commando and sneak with " + this._throwableWeapon.throw();
     }
 
 }
 
-export{Ninja, Commando, Katana, Shuriken };
+export { Ninja, Commando, Katana, Shuriken };

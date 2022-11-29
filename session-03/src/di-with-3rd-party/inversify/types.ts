@@ -3,4 +3,4 @@ const Types = {
     Weapon: Symbol.for("Weapon"),
     ThrowableWeapon: Symbol.for("ThrowableWeapon")
 };
-export {Types};
+export { Types };

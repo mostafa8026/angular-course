@@ -31,4 +31,7 @@ class CEO {
 export function diConstructor(){
     let ceo = new CEO(new SnappDriver());
     ceo.visitBussinessPartner('Mashad');
+
+    ceo = new CEO(new PersonalDriver());
+    ceo.visitBussinessPartner('Ghazvin');
 }
