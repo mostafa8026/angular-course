@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container" style="height: 50px;"></div>
+    <h1>Another</h1>
+    <template id="custom-element-template">
+        <style>
+            h1 {
+                color: red;
+            }
+        </style>
+        <h1>Hello, world!</h1>
+    </template>
+</body>
+<script>
+    const template = document.getElementById('custom-element-template').content;
+    const container = document.getElementById('container');
+    const shadowRoot = container.attachShadow({ mode: 'closed' });
+    shadowRoot.appendChild(template);
+    const shadowContent = shadowRoot.querySelector('h1');
+    shadowContent.style.color = 'blue';
+</script>
+</html>
